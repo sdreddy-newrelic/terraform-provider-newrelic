@@ -148,8 +148,15 @@ func dataSourceNewRelicNotificationDestinationRead(ctx context.Context, d *schem
 
 		if len(destinationResponse.Entities) == 0 {
 			d.SetId("")
-			return diag.FromErr(fmt.Errorf("no destination found. accountID=%d, filters={id=%s, name=%s, exactName=%s}",
-				accountID, filters.ID, filters.Name, filters.ExactName))
+			if idValue != "" {
+				return diag.FromErr(fmt.Errorf("the id provided does not match any New Relic notification destination"))
+			}
+			if nameValue != "" {
+				return diag.FromErr(fmt.Errorf("the name provided does not match any New Relic notification destination"))
+			}
+			if exactNameValue != "" {
+				return diag.FromErr(fmt.Errorf("the exact_name provided does not match any New Relic notification destination"))
+			}
 		}
 
 		respErrors := buildAiNotificationsResponseErrors(destinationResponse.Errors)
@@ -172,8 +179,15 @@ func dataSourceNewRelicNotificationDestinationRead(ctx context.Context, d *schem
 
 	if len(destinationResponse.Entities) == 0 {
 		d.SetId("")
-		return diag.FromErr(fmt.Errorf("no destination found. accountID=%d, filters={id=%s, name=%s, exactName=%s}, totalCount=%d",
-			accountID, filters.ID, filters.Name, filters.ExactName, destinationResponse.TotalCount))
+		if idValue != "" {
+			return diag.FromErr(fmt.Errorf("the id provided does not match any New Relic notification destination"))
+		}
+		if nameValue != "" {
+			return diag.FromErr(fmt.Errorf("the name provided does not match any New Relic notification destination"))
+		}
+		if exactNameValue != "" {
+			return diag.FromErr(fmt.Errorf("the exact_name provided does not match any New Relic notification destination"))
+		}
 	}
 
 	respErrors := buildAiNotificationsResponseErrors(destinationResponse.Errors)
